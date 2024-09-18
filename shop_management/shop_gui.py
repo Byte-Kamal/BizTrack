@@ -10,7 +10,7 @@ class ShopGUI:
     def __init__(self, main_window):
         self.shop = Shop()
         self.main_window = main_window
-        self.main_window.title("Shop Management System")
+        self.main_window.title("BizTrack")
 
         self.button_frame = tk.Frame(main_window)
         self.button_frame.pack(side=tk.TOP, fill=tk.X)

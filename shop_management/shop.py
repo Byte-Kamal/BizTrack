@@ -17,10 +17,23 @@ class Shop:
 
     def add_item_to_inventory(self, name, price, quantity):
         try:
-            self.db.execute_query(
-                "INSERT INTO products (name, price, quantity) VALUES (%s, %s, %s)",
-                (name, price, quantity),
+            product = self.db.fetch_one(
+                "SELECT id, quantity FROM products WHERE name = %s AND price = %s",
+                (name, price),
             )
+
+            if product:
+                product_id, current_quantity = product
+                new_quantity = current_quantity + quantity
+                self.db.execute_query(
+                    "UPDATE products SET quantity = %s WHERE id = %s",
+                    (new_quantity, product_id),
+                )
+            else:
+                self.db.execute_query(
+                    "INSERT INTO products (name, price, quantity) VALUES (%s, %s, %s)",
+                    (name, price, quantity),
+                )
         except mysql.connector.Error as err:
             print(f"Error: {err}")
 
