@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "BizTrack"
+version = "0.1.0"
+description = "Simple Shop Management with MySql Database"
+authors = ["Byte-Kamal <kdhital132@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+mysql-connector-python = "^9.0.0"
+black = "^24.8.0"
+pylint = "^3.2.7"
+
+[tool.black]
+line-length = 88
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
