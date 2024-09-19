@@ -1,7 +1,7 @@
 # pylint: disable=missing-docstring
 
-
 import tkinter as tk
+from tkinter import messagebox
 
 from shop_gui import ShopGUI
 
@@ -11,6 +11,6 @@ if __name__ == "__main__":
         app = ShopGUI(root)
         root.mainloop()
     except tk.TclError as e:
-        print(f"A Tkinter error occurred: {e}")
+        messagebox.showerror("Error", f"An error occurred: {e}")
     except ImportError as e:
-        print(f"An import error occurred: {e}")
+        messagebox.showerror("Error", f"An error occurred: {e}")

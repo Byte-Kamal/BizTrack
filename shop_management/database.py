@@ -16,8 +16,8 @@ class Database:
 
     def create_database(self):
         try:
-            self.cursor.execute("CREATE DATABASE IF NOT EXISTS `inventory_management`")
-            self.cursor.execute("USE `inventory_management`")
+            self.cursor.execute("CREATE DATABASE IF NOT EXISTS `BizTrack`")
+            self.cursor.execute("USE `BizTrack`")
         except Error as e:
             print(f"Error creating database: {e}")
 
@@ -36,7 +36,8 @@ class Database:
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     product_name VARCHAR(255) NOT NULL, 
                     quantity INT, 
-                    total_price DECIMAL(10, 2)
+                    total_price DECIMAL(10, 2),
+                    sales_date DATE NOT NULL
                 )"""
             )
         except Error as e:

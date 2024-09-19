@@ -1,5 +1,6 @@
 # pylint: disable=missing-docstring
 
+import datetime
 from tkinter import messagebox
 
 import mysql.connector
@@ -58,9 +59,15 @@ class Shop:
                 (new_quantity, item_id),
             )
             total_price = price * quantity
+            sales_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.db.execute_query(
-                "INSERT INTO sales (product_name, quantity, total_price) VALUES (%s, %s, %s)",
-                (product_name, quantity, total_price),
+                """INSERT INTO sales (
+                    product_name,
+                    quantity,
+                    total_price,
+                    sales_date 
+                    ) VALUES (%s, %s, %s, %s)""",
+                (product_name, quantity, total_price, sales_date),
             )
         except mysql.connector.Error as err:
             print(f"Error: {err}")
