@@ -72,8 +72,8 @@ class Shop:
         except mysql.connector.Error as err:
             print(f"Error: {err}")
 
-    def view_sales_report(self):
-        return self.db.fetch_all("SELECT * FROM sales")
-
     def display_inventory(self):
-        return self.db.fetch_all("SELECT * FROM products")
+        return self.db.fetch_all("SELECT * FROM products ORDER BY name ASC")
+
+    def view_sales_report(self):
+        return self.db.fetch_all("SELECT * FROM sales ORDER BY sales_date DESC")

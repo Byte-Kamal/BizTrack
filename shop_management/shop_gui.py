@@ -88,15 +88,7 @@ class ShopGUI:
         header_label.pack(pady=20)
 
     def setup_dashboard(self):
-        self.setup_header(self.dashboard_frame)
-        # Summary Section
-        summary_frame = ttk.Frame(self.dashboard_frame)
-        summary_frame.pack(pady=20, fill=tk.X)
-
-        ttk.Label(summary_frame, text="Total Items: XX", style="TLabel").pack(pady=5)
-        ttk.Label(summary_frame, text="Total Sales: $XXXXX", style="TLabel").pack(
-            pady=5
-        )
+        pass
 
     def setup_add_item(self):
         self.setup_header(self.add_item_frame, "Add Item")
@@ -153,21 +145,21 @@ class ShopGUI:
 
     def setup_view_inventory(self):
         self.setup_header(self.view_inventory_frame, "View Inventory")
-        self.inventory_tree = ttk.Treeview(
+        self.inventory_table = ttk.Treeview(
             self.view_inventory_frame,
             columns=("Name", "Price", "Quantity"),
             show="headings",
-            selectmode="none",
+            selectmode="extended",
         )
-        self.inventory_tree.heading("Name", text="Name")
-        self.inventory_tree.heading("Price", text="Price")
-        self.inventory_tree.heading("Quantity", text="Quantity")
+        self.inventory_table.heading("Name", text="Name")
+        self.inventory_table.heading("Price", text="Price")
+        self.inventory_table.heading("Quantity", text="Quantity")
 
-        self.inventory_tree.column("Name", anchor="center")
-        self.inventory_tree.column("Price", anchor="center")
-        self.inventory_tree.column("Quantity", anchor="center")
+        self.inventory_table.column("Name", anchor="center")
+        self.inventory_table.column("Price", anchor="center")
+        self.inventory_table.column("Quantity", anchor="center")
 
-        self.inventory_tree.pack(pady=20, fill=tk.BOTH, expand=True)
+        self.inventory_table.pack(pady=20, fill=tk.BOTH, expand=True)
 
         ttk.Button(
             self.view_inventory_frame,
@@ -178,23 +170,23 @@ class ShopGUI:
 
     def setup_view_sales_report(self):
         self.setup_header(self.view_sales_report_frame, "View Sales Report")
-        self.sales_report_tree = ttk.Treeview(
+        self.sales_report_table = ttk.Treeview(
             self.view_sales_report_frame,
             columns=("Name", "Quantity", "Total Price", "Sales Date"),
             show="headings",
-            selectmode="none",
+            selectmode="extended",
         )
-        self.sales_report_tree.heading("Name", text="Name")
-        self.sales_report_tree.heading("Quantity", text="Quantity")
-        self.sales_report_tree.heading("Total Price", text="Total Price")
-        self.sales_report_tree.heading("Sales Date", text="Sales Date")
+        self.sales_report_table.heading("Name", text="Name")
+        self.sales_report_table.heading("Quantity", text="Quantity")
+        self.sales_report_table.heading("Total Price", text="Total Price")
+        self.sales_report_table.heading("Sales Date", text="Sales Date")
 
-        self.sales_report_tree.column("Name", anchor="center")
-        self.sales_report_tree.column("Quantity", anchor="center")
-        self.sales_report_tree.column("Total Price", anchor="center")
-        self.sales_report_tree.column("Sales Date", anchor="center")
+        self.sales_report_table.column("Name", anchor="center")
+        self.sales_report_table.column("Quantity", anchor="center")
+        self.sales_report_table.column("Total Price", anchor="center")
+        self.sales_report_table.column("Sales Date", anchor="center")
 
-        self.sales_report_tree.pack(pady=20, fill=tk.BOTH, expand=True)
+        self.sales_report_table.pack(pady=20, fill=tk.BOTH, expand=True)
 
         ttk.Button(
             self.view_sales_report_frame,
@@ -257,16 +249,17 @@ class ShopGUI:
 
         if sales:
             try:
-                self.sales_report_tree.delete(*self.sales_report_tree.get_children())
+                self.sales_report_table.delete(*self.sales_report_table.get_children())
                 for row in sales:
-                    self.sales_report_tree.insert("", tk.END, values=row[1:])
+                    formatted_row = (row[1], row[2], f"${row[3]:.2f}", row[4])
+                    self.sales_report_table.insert("", tk.END, values=formatted_row)
             except IndexError as e:
                 print(f"Error accessing sales data: {e}")
                 messagebox.showerror(
                     "Error", "Sales data is not in the expected format."
                 )
         else:
-            self.sales_report_tree.delete(*self.sales_report_tree.get_children())
+            self.sales_report_table.delete(*self.sales_report_table.get_children())
             messagebox.showinfo("Info", "No sales have been made.")
 
     def display_inventory(self):
@@ -274,14 +267,15 @@ class ShopGUI:
 
         if inventory:
             try:
-                self.inventory_tree.delete(*self.inventory_tree.get_children())
+                self.inventory_table.delete(*self.inventory_table.get_children())
                 for row in inventory:
-                    self.inventory_tree.insert("", tk.END, values=row[1:])
+                    formatted_row = (row[1], f"${row[2]:.2f}", row[3])
+                    self.inventory_table.insert("", tk.END, values=formatted_row)
             except IndexError as e:
                 print(f"Error accessing inventory data: {e}")
                 messagebox.showerror(
                     "Error", "Inventory data is not in the expected format."
                 )
         else:
-            self.inventory_tree.delete(*self.inventory_tree.get_children())
+            self.inventory_table.delete(*self.inventory_table.get_children())
             messagebox.showinfo("Info", "Inventory is empty.")
